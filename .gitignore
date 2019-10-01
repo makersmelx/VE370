@@ -1,0 +1,11 @@
+/**/.DS_store
+*.jar
+*.png
+gene
+*.bc
+*.exe
+*.msi
+*.txt
+*.ll
+
+PROJECT1/asm.sh
