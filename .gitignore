@@ -10,3 +10,4 @@ gene
 *.ll
 
 PROJECT1/asm.sh
+*.tar
