@@ -11,3 +11,12 @@ gene
 
 PROJECT1/asm.sh
 *.tar
+*.pygtex
+*.pygstyle
+*.fdb_latexmk
+*.fls
+*.log
+*.aux
+PROJ/PROJECT2/peer evaluation.pdf
+PROJ/PROJECT2/peer evaluation.md
+*.jpg

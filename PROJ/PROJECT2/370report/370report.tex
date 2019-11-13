@@ -1,0 +1,398 @@
+\documentclass{article}[12pt]
+\usepackage{amsmath}
+\usepackage{algorithm}  
+\usepackage{algpseudocode}  
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{bigstrut}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage[final]{pdfpages}
+\usepackage{fontspec}
+\usepackage{float}
+\usepackage{gauss}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{graphicx}
+\usepackage[left=2.54cm,right=2.54cm,top=3.2cm,bottom=3.2cm]{geometry}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage{makecell}
+\usepackage{minted}
+\usepackage[version=4]{mhchem}
+\usepackage{paralist}
+\usepackage{subfigure}
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage{textcomp}
+\usepackage{ulem}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{xcolor}
+
+ 
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm
+
+
+\author{}
+\lstset{language=C}
+\linespread{1.2}
+\pagestyle{fancy}
+\rhead{\tiny VE370 Projet 2 Group 28}
+\lhead{\tiny University of Michigan – Shanghai Jiao Tong University Joint Institute (UM-SJTU JI) }
+\rfoot{}
+\cfoot{\thepage}
+
+\begin{document}
+	%Front page
+\begin{titlepage}
+\setmainfont{Copperplate Gothic Light}
+	\title{ ~\\ \hrule~\\ UM-SJTU Joint Institute \\Introduction to Computer Organization\\(Ve370)\vspace{3mm}\\ \hrule ~\\~\\~\\~\\ Project Two Report\\~\\~\\}
+		\date{}
+	\maketitle
+	\vspace{3.5cm}
+	\begin{equation*}
+    \begin{array}{lr}
+     	\textbf{Zhao Zhijie}    &  \textbf{517370910035}\\
+       \textbf{Wu Jiayao}  & \textbf{517370910257}\\
+       \textbf{Cai Zhenyi}&\textbf{517370910216}\\
+		\textbf{Wei Ye}&\textbf{517370910175}\\
+    \end{array}
+	\end{equation*}
+
+	\setmainfont{Times New Roman}
+	\thispagestyle{empty}
+\end{titlepage}
+	
+	\tableofcontents
+	\newpage
+	\section{Objective}
+	% super qqnbxl
+	In this project, we need to model both single cycle and pipelined implementation of MIPS computer in Verilog. Such MIPS implementation should support a subset of MIPS instruction set including:
+	\begin{itemize}
+		\item The memory-reference instructions load word (lw) and store word (sw)
+		\item The arithmetic-logical instructions add, addi, sub, and, andi, or, and slt
+		\item The jumping instructions branch equal (beq), branch not equal (bne), and jump (j)
+	\end{itemize}
+
+	\section{The Top-level Block Diagram}
+	\subsection{Top-level Block Diagram of Single Cycle Implementation}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.5]{pic1.png}
+		\caption{top-level block diagram of single cycle implementation}
+	\end{figure}
+	\subsection{Top-level Block Diagram of Pipeline Implementation}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.5]{pic2.jpg}
+		\caption{top-level block diagram of pipeline implementation}
+	\end{figure}
+	
+	\section{The RTL Schematic of the Verilog Design}
+	\subsection{Design for Single Cycle Processor}
+		The following are the general RTL design of the single cycle processor.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.3]{singleRTL.png}
+			\caption{RTL diagram of single cycle implementation}
+		\end{figure}
+	\newpage	
+	\subsection{Design for Pipeline Processor}
+		The following are the general RTL design of the pipeline processor.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.3]{pipeRTL.png}
+			\caption{RTL diagram of pipeline implementation}
+		\end{figure}
+	
+	\section{Components Design and Explanations}
+		\subsection{ALU}
+		% qqnbxl
+		For ALU, we use the signal $ALU Control$ to control the output zero and result. At the beginning of our simulation, we initialize the result to $0$. The figure below shows the code implementation of ALU. The complete version of code is in Appendix.
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.5]{ALU_EX.png}
+				\caption{Part of the code of ALU}
+			\end{figure}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.3]{ALU.png}
+				\caption{RTL diagram of ALU}
+			\end{figure}
+		\subsection{Register File}
+		% qqnbxl
+		In register file, we just create 32 32-bit registers and then use them to store, read or write data. It is controlled by the $reg\_write$ signal. Code implementation is shown in figure below. The complete version of code is in Appendix.
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.5]{RF.png}
+				\caption{Part of the code of Register File}
+			\end{figure}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.7]{registerfile.png}
+				\caption{RTL diagram of Register File}
+			\end{figure}
+		\subsection{Instruction Memory}
+		% qqnbxl	
+		In the instruction memory part, we use the \textbf{include} command to load the instructions from the given text file. Such way of loading instructions is easier to be implemented and less likely of making mistakes. Memory should be initialized as $0$ first before we get the input address and output instructions. Related codes are shown in figure below.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{IM_EX.png}
+			\caption{Part of the code of Instruction Memory}
+		\end{figure}
+		\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.3]{instructionMemory.png}
+				\caption{RTL diagram of Instruction Memory}
+			\end{figure}
+		\newpage
+		\subsection{Data Memory}
+		% qqnbxl
+		Compared with the instruction memory, implementation of the data memory is more tricky. We need to get the index of data by multiplying the address of the data to $4$. Then we write data one by one in case that the signal $mem\_write$ is $1$. Initialization is included for this part, too. Related codes can be seen in picture below.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{DM_EX.png}
+			\caption{Part of the code of Data Memory}
+		\end{figure}
+		\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.3]{dataMemory.png}
+				\caption{RTL diagram of Data Memory}
+			\end{figure}
+		
+		\subsection{Forwarding Unit}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.3]{forwarding.png}
+				\caption{RTL diagram of Forwarding Unit}
+			\end{figure}
+		% qqnbxl
+		Forwarding part is one of the most challenging parts to us. We need to detect EX hazzard and MEM hazzard by comparing the value in different registers. What's more, the hazzard that caused by \textbf{beq}, \textbf{bne} or \textbf{jump} instruction should be taken into consideration. This unit helps to path the data we need ``ahead of time". Combined with the hazard detection unit, we can take care of these basic hazards successfully and efficiently. All these works are done by using the $if...else...$ conditions and the related codes are shown at the following.
+
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{FO3.png}
+			\caption{Part of the code of Forwarding Unit to detect MemSrc Hazard}
+		\end{figure}
+
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{FO1.png}
+			\caption{Part of the code of Forwarding Unit to detect EX/MEM Hazzard}
+		\end{figure}
+		
+		
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{FO2.png}
+			\caption{Part of the code of Forwarding Unit to detect beq/bne data Hazzard}
+		\end{figure}
+			
+	\section{Hazzard Detection Unit}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.3]{hazzard.png}
+			\caption{RTL diagram of Forwarding Unit}
+		\end{figure}
+	% qqnbxl
+	\subsection{Hazard Detection Unit}
+	Hazzard detection part is also one of the most challenging parts. This part mostly is used to generate ``bubbles" or nop instruction in the pipeline. When we face a load use hazard or a data hazard caused by \textbf{beq/bne}, we need to stall the later instruction as well as flushing the space between the previous instruction and stalled instruction. Also, we carefully design the detection part to avoid the stalled instruction being flushed due to the successful \textbf{jump} or \textbf{beq/bne} instruction.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.5]{DE_EX.png}
+		\caption{Part of the code of Hazzard Detection Unit}
+	\end{figure}
+	% qqnbxl 这里我有点没看懂，我怕意思改错了
+	\subsection{IF/ID flush}
+	One of our flushing unit, which is used to deal with control hazzard caused by any kind of ``jumping" instruction, flushing the IFID pipeline register when a \textbf{beq/bne} or \textbf{jump} is taken, is set outside the hazzard detection unit. Reason for setting outside hazard detection unit is that we only need it happen when any \textbf{jump} or \textbf{beq/bne} instruction is going to happen. So a wire called $ifbranchjump$ will detect this situation and flush the instruction after \textbf{beq/bne} or \textbf{jump}. Furthermore, a $!stall$ is used to prevent the stalled instruction being flushed when the equal accidentally output a one ( when the actual result need longer time to get).
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.5]{ifidflush.png}
+		\caption{Part of the code of IFID Flush.}
+	\end{figure}
+	
+	\newpage
+	\section{SSD and Top Module Design}
+		In this part, we will introduce the design of our SSD and how we output the results on FPGA board.
+		\par We can look at our FPGA board at first.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.3]{FPGA.png}
+			\caption{The picture of the FPGA board we use}
+		\end{figure}
+		\par To control this FPGA board, highlighted switches are needed.
+		\begin{itemize}
+			\item The switch in blue represents the input ``clk'' signal of the module pipelined processor. It can be controlled by ourselves.
+			\item The switch in orange represents the ``SSDoutupper'' signal. When its value is 1, the SSD outputs the first 4-bit value in the register.When its value is 0, the SSD outputs the last 4-bit value in the register.
+			\item The five switches in red are used to determine which register we want to read. It is the input 5-bit signal ``Input\_Readreg'' of the module pipelined processor.
+			\item The switch in green is used to determine whether we output the address of PC or the value in registers on SSD. When its value is 1, SSD will plot the address of PC no matter what value red switches are. When its value is 0, SSD will plot the value in the chosen register.
+		\end{itemize}
+		
+		To make the numbers shown on the SSD correct, we use three new components: ring counter, clock divider and SSD. Some parts of their codes are shown as follow. The complete codes of the three components can be found in the Appendix.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{clock_divider.png}
+			\caption{Part of the codes of the clock divider}
+		\end{figure}
+	
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{ring_counter.png}
+			\caption{Part of the codes of the ring counter}
+		\end{figure}
+		
+		The ring counter and the clock divider used to help the number shown on the SSD stable. Their input signal clk is the clock cycle of the FPGA board.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{SSD.png}
+			\caption{Part of the codes of the SSD}
+		\end{figure}
+		
+		 The component SSD outputs a 7-bit output signal to control the display number of SSD.
+		 \par By using these components, we succeed to plot our result of pipeline processor on the FPGA board.
+		
+		
+	\section{Simulation Scenario}
+	\par For single cycle processor, we use \textbf{10ns} as the half length of a clock in the testbench. 
+	\par For pipeline cycle processor, we manually add a changing integer that will be add 1 whenever our clk changes as the half length of a clock in the testbench.
+	\par Details about test bench design can be found in Appendix.
+	\section{Textual Result}
+	In this part, we show part of the function of our program. To avoid repetition, for each design, we present only part of the results of the simulation. Further details are available in Appendix.
+	\subsection{Textual Result of Single Cycle Design}
+		
+		The following PC value shows the jump instruction is successful.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{745c.png}
+		\end{figure}
+		
+		And the following PC value change shows that the \textbf{beq} has been successfully taken as currently $\$s4$ is not one any more (the last picture shows it was one).
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{6cac.png}
+		\end{figure}
+	\newpage
+	\subsection{Textual Result of Pipeline Design}
+		
+		The first $addi$ instruction doesn't take place as soon as the program starts. The register $\$t0$ get the value when the pc jumps to $0x10$. This shows the property of the pipeline processor.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{addi.png}
+		\end{figure}
+		The following result shows the successful use of the lw and sw. We can see the $\$s7$ is changed from $0x57$ to $0x37$. This shows the previous \textbf{sw} and this \textbf{lw} is successful.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{lw.png}
+		\end{figure}
+	\subsection{The Result of the Bonus Part of Pipeline Design}
+	% qqnbxl
+		For the bonus part, we need to use stall and forwarding to detect whether \textbf{beq/bne} is taken, the following is an example when the program encounter the $beq$ $\$ s4$, $\$0,$ $EXIT$ for the first time. The program stalled itself to find the answer and go on reading the next instruction later.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.8]{bonusstall.png}
+		\end{figure}
+	\section{Conclusion and discussion}
+	In this project, we implements single cycle and pipeline version of MIPS processor in Verilog. The design supports almost most R-type, I-type and J-type MIPS instructions, such as \textbf{lw}(load word), \textbf{sw}(store word), \textbf{beq}(branch equal), \textbf{bne}(branch not equal) and \textbf{j}(jump). Through this project, we get a better knowledge about the single cycle and pipeline MIPS processor.
+	% qqnbxl
+	\par When working on the project, we find that both implementations have their advantages and disadvantages. For a single cycle processor, though it is easier to complement, it wastes lots of time since only one part of the processor will be working in one cycle. For a pipeline processor, it is harder to complement. Complex problems such as the various hazard should be handled with great care and effort. However, it is more time efficient since all of its parts are working together for most time.
+	
+	\newpage
+	\section{Appendix}
+	\subsection{The Simulation Results we get}
+		\subsubsection{The Instruction Memory we use}
+			\inputminted{ca65}{pipeline/InstructionMem_for_P2_Demo_updated.txt}
+		\subsubsection{The Result of Single Cycle Design}
+			\inputminted{ca65}{textualresultsingle.txt}
+	
+		\subsubsection{The Result of Pipeline Design}
+			\inputminted{ca65}{textualresultpipeline.txt}
+		\subsubsection{The Instruction Memory we use for Bonus}
+			\inputminted{ca65}{pipeline/InstructionMem_for_P2_Demo_Bonus.txt}
+	
+		\subsection{The Result of the Bonus Part of Pipeline Design}
+			\inputminted{ca65}{pipeline/bonustextualresult.txt}
+	
+	\subsection{Codes for Single Cycle Design}
+		\subsubsection{ALU}
+			\inputminted{verilog}{singlecycle/ALU.v}
+		\subsubsection{ALU Control}
+			\inputminted{verilog}{singlecycle/ALUControl.v}
+		\subsubsection{Control}
+			\inputminted{verilog}{singlecycle/Control.v}
+		\subsubsection{Data Memory}
+			\inputminted{verilog}{singlecycle/dataMemory.v}
+		\subsubsection{Instruction Memory}
+			\inputminted{verilog}{singlecycle/instructionMemory.v}
+		\subsubsection{PC}
+			\inputminted{verilog}{singlecycle/PC.v}
+		\subsubsection{Register}
+			\inputminted{verilog}{singlecycle/register.v}
+		\subsubsection{Signal Extend}
+			\inputminted{verilog}{singlecycle/signExtend.v}
+		\subsubsection{Single Cycle Processor}
+			\inputminted{verilog}{singlecycle/singleCycle.v}
+		\subsubsection{Test Bench we use}
+			\inputminted{verilog}{singlecycle/test_bench.v}
+		\subsubsection{The Instruction Memory we use}
+			\inputminted{ca65}{singlecycle/InstructionMem_for_P2_Demo_updated.txt}
+	
+	\newpage
+	\subsection{Codes for Pipeline Design}
+		\subsubsection{ALU}
+			\inputminted{verilog}{pipeline/ALU.v}
+		\subsubsection{ALU Control}
+			\inputminted{verilog}{pipeline/ALUControl.v}
+		\subsubsection{Control}
+			\inputminted{verilog}{pipeline/Control.v}
+		\subsubsection{Data Memory}
+			\inputminted{verilog}{pipeline/DataMemory.v}
+		\subsubsection{Instruction Memory}
+			\inputminted{verilog}{pipeline/InstructionMemory.v}
+		\subsubsection{IF/ID Register}
+			\inputminted{verilog}{pipeline/IF_ID.v}
+		\subsubsection{ID/EX Register}
+			\inputminted{verilog}{pipeline/ID_EX.v}
+		\subsubsection{EX/MEM Register}
+			\inputminted{verilog}{pipeline/EX_MEM.v}
+		\subsubsection{MEM/WB Register}
+			\inputminted{verilog}{pipeline/MEM_WB.v}
+		\subsubsection{Forwarding Unit}
+			\inputminted{verilog}{pipeline/ForwardingUnit.v}
+		\subsubsection{Hazard Detection Unit}
+			\inputminted{verilog}{pipeline/HazardDetectionUnit.v}
+		\subsubsection{PC}
+			\inputminted{verilog}{pipeline/PC.v}
+		\subsubsection{Registers}
+			\inputminted{verilog}{pipeline/Register.v}
+		\subsubsection{Signal Extend}
+			\inputminted{verilog}{pipeline/SignExtend.v}
+		\subsubsection{32-bit 3 to 1 MUX}
+			\inputminted{verilog}{pipeline/threetwonemux32.v}
+		\subsubsection{Pipeline Processor}
+			\inputminted{verilog}{pipeline/PipelinedProcessor.v}
+		
+	\newpage
+	\subsection{Codes for SSD Display}
+		\subsubsection{Clock Divider}
+			\inputminted{verilog}{pipeline/Clockdivider.v}
+		\subsubsection{Ring Counter}
+			\inputminted{verilog}{pipeline/Ringcounter.v}
+		\subsubsection{SSD}
+			\inputminted{verilog}{pipeline/SSDfour.v}
+				
+			
+\end{document}
+	
+	
+
+	 
