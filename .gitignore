@@ -1,3 +1,5 @@
+*.vcd
+*.vvp
 /**/VE370 REF
 /**/.DS_store
 *.jar
